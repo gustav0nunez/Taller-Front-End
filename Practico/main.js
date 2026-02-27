@@ -1,39 +1,30 @@
+import ProductoService from "./ProductoServicios.js";
 
-    async function obtenerProductos() {
-try {
-const response = await fetch('https://602ee9da4410730017c51705.mockapi.io/api/v1/productos');
-const data = await response.json();
-console.log(data);
-return data;
-} catch (error) {
-console.error(error);
+const prodService = new ProductoService();
+
+function altaProducto(){
+    let nom = document.getElementById("txtNomb").value; 
+    let precio = document.getElementById("txtPrecio").value;
+    let descripcion = document.getElementById("txtDescripcion").value;
+    let titulo = document.getElementById("txtTitulo").value;
+    let imagenes = document.getElementById("txtImagenes").value;
+    prodService.agregarProducto(new Producto(nom, precio, descripcion, titulo, imagenes));
 }
-}
-obtenerProductos();
 
-
-async function agregarProducto() {
-    const prodPrueba = {    
-"nombre": "control remoto",
- "precio": 45,
- "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRK0IZ6XNrGCiBhcISFqa2dwUTa46nZfhLu1Q&s",
- "descripcion": "Para conejos",
- "numero": 2254,
- "titulo": "Zanahoria"};
+async function cargarProductos() {
     try {
-const response = await fetch('https://602ee9da4410730017c51705.mockapi.io/api/v1/productos', {
-method: 'POST',
-body: JSON.stringify(prodPrueba),
-headers: {
-'Content-Type': 'application/json'
-}
-});
-const data = await response.json();
-console.log(data);
-} catch (error) {
-console.error(error);
+        const productos = await prodService.obtenerProductos();
+        for(let elem of productos) {
+            console.log(elem);
+        }
+    } catch (error) {
+        console.error("Error al cargar productos:", error);
+    }
 }
 
+function inicializar(){
+    document.getElementById("btnAgregar").addEventListener("click", altaProducto);
+    cargarProductos();
 }
 
-agregarProducto();
+window.onload = inicializar;
