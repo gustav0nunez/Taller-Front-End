@@ -4,7 +4,7 @@ import Producto from "./Producto.js";
 const prodService = new ProductoService();
 
 function altaProducto(){
-    let nom = document.getElementById("txtNomb").value; 
+    let nom = document.getElementById("txtNombre").value; 
     let precio = document.getElementById("txtPrecio").value;
     let descripcion = document.getElementById("txtDescripcion").value;
     let titulo = document.getElementById("txtTitulo").value;
