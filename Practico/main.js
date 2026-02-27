@@ -1,4 +1,5 @@
 import ProductoService from "./ProductoServicios.js";
+import Producto from "./Producto.js";
 
 const prodService = new ProductoService();
 
@@ -8,7 +9,7 @@ function altaProducto(){
     let descripcion = document.getElementById("txtDescripcion").value;
     let titulo = document.getElementById("txtTitulo").value;
     let imagenes = document.getElementById("txtImagenes").value;
-    prodService.agregarProducto(new Producto(nom, precio, descripcion, titulo, imagenes));
+    prodService.agregarProducto(new Producto(null,nom, precio, descripcion, titulo, imagenes));
 }
 
 async function cargarProductos() {
