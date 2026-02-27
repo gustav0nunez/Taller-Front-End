@@ -3,18 +3,11 @@ import Producto from "./Producto.js"
 
 export default class ProductoSerivios {
 
-async agregarProducto() {
-    const prodPrueba = {    
-"nombre": "control remoto",
- "precio": 45,
- "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRK0IZ6XNrGCiBhcISFqa2dwUTa46nZfhLu1Q&s",
- "descripcion": "Para conejos",
- "numero": 2254,
- "titulo": "Zanahoria"};
+async agregarProducto(producto) {   
     try {
 const response = await fetch('https://602ee9da4410730017c51705.mockapi.io/api/v1/productos', {
 method: 'POST',
-body: JSON.stringify(prodPrueba),
+body: JSON.stringify(producto),
 headers: {
 'Content-Type': 'application/json'
 }
@@ -40,8 +33,8 @@ console.error(error);
 
 async obtenerProducto(id) {
 try {
-const response = await fetch('https://602ee9da4410730017c51705.mockapi.io/api/v1/productos/:id');
-const data = await response.json(id);
+const response = await fetch('https://602ee9da4410730017c51705.mockapi.io/api/v1/productos/${id}');
+const data = await response.json();
 console.log(data);
 } catch (error) {
 console.error(error);
@@ -50,7 +43,7 @@ console.error(error);
 
 async eliminarProducto(id) {
 try {
-const response = await fetch('https://https://602ee9da4410730017c51705.mockapi.io/api/v1/productos/:id.com/api/data/123', {
+const response = await fetch('https://602ee9da4410730017c51705.mockapi.io/api/v1/productos/${id}', {
 method: 'DELETE'
 });
 const data = await response.json(id);
@@ -60,11 +53,11 @@ console.error(error);
 }
 }
 
-async modificarProducto(Producto) {
+async modificarProducto(producto) {
 try {
-const response = await fetch('https://602ee9da4410730017c51705.mockapi.io/api/v1/productos/:id', {
+const response = await fetch('https://602ee9da4410730017c51705.mockapi.io/api/v1/productos/${producto.id}', {
 method: 'PUT',
-body: JSON.stringify({ name: 'Jane Doe', email: 'jane.doe@example.com' }),
+body: JSON.stringify(producto),
 headers: {
 'Content-Type': 'application/json'
 }
