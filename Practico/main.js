@@ -13,15 +13,29 @@ function altaProducto(){
 }
 
 async function cargarProductos() {
-    try {
         const productos = await prodService.obtenerProductos();
-        for(let elem of productos) {
-            console.log(elem);
-        }
-    } catch (error) {
-        console.error("Error al cargar productos:", error);
+        const cuerpoTabla = document.getElementById("tabla-productos");
+        cuerpoTabla.innerHTML = "";
+        productos.forEach(prod => {
+            const fila = document.createElement("tr");
+            fila.innerHTML = `
+            <td>${prod.id}</td>
+            <td>${prod.nombre}</td>
+            <td>${prod.titulo}</td>
+            <td>$${prod.precio}</td>
+            <td>${prod.descripcion}</td>
+            <td>
+                <button class="btn btn-warning btn-sm">✏️ Editar</button>
+                <button class="btn btn-danger btn-sm">🗑️ Borrar</button>
+            </td>
+        `;
+        cuerpoTabla.appendChild(fila)
+            
+        }); 
+        
     }
-}
+
+
 
 function inicializar(){
     document.getElementById("btnAgregar").addEventListener("click", altaProducto);
