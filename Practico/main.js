@@ -25,7 +25,7 @@ async function cargarProductos() {
             <td>${prod.precio}</td>
             <td>${prod.descripcion}</td>
             <td>
-                <button class="btn btn-warning btn-sm">✏️ Editar</button>
+                <button class="btn btn-warning btn-sm data-id="${prod.id}">✏️ Editar</button>
                 <button class="btn btn-danger btn-sm btn-borrar" data-id="${prod.id}">🗑️ Borrar</button>
             </td>
         `;
