@@ -26,12 +26,21 @@ async function cargarProductos() {
             <td>${prod.descripcion}</td>
             <td>
                 <button class="btn btn-warning btn-sm">✏️ Editar</button>
-                <button class="btn btn-danger btn-sm">🗑️ Borrar</button>
+                <button class="btn btn-danger btn-sm btn-borrar" data-id="${prod.id}">🗑️ Borrar</button>
             </td>
         `;
         cuerpoTabla.appendChild(fila)
             
         }); 
+
+        const btnBorrar = document.querySelectorAll(".btn-borrar");
+        btnBorrar.forEach (boton =>{
+            boton.addEventListener("click",async()=> {
+                const idProducto = boton.dataset.id;
+                await prodService.eliminarProducto(idProducto);
+                cargarProductos();           
+            });
+        });
         
     }
 
