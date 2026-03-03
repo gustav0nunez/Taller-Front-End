@@ -3,40 +3,40 @@ import Producto from "./Producto.js";
 
 const prodService = new ProductoService();
 
- async function altaProducto(){
-    let nom = document.getElementById("txtNombre").value; 
+async function altaProducto() {
+    let nom = document.getElementById("txtNombre").value;
     let precio = document.getElementById("txtPrecio").value;
     let descripcion = document.getElementById("txtDescripcion").value;
     let titulo = document.getElementById("txtTitulo").value;
     let imagenes = document.getElementById("txtImagenes").value;
     let idGuardado = document.getElementById("btnAgregar").dataset.id;
-    if(idGuardado == null){
-    await prodService.agregarProducto(new Producto(idGuardado,nom, precio, descripcion, titulo, imagenes));
-}else {
-    await prodService.modificarProducto(new Producto(idGuardado,nom, precio, descripcion, titulo, imagenes)); 
+    if (idGuardado == null) {
+        await prodService.agregarProducto(new Producto(idGuardado, nom, precio, descripcion, titulo, imagenes));
+    } else {
+        await prodService.modificarProducto(new Producto(idGuardado, nom, precio, descripcion, titulo, imagenes));
 
-}
-cargarProductos();
+    }
+    cargarProductos();
 
-document.getElementById("txtNombre").value = "";
-document.getElementById("txtTitulo").value = "";
-document.getElementById("txtDescripcion").value = "";
-document.getElementById("txtPrecio").value =  "" ;
-document.getElementById("txtImagenes").value = "";
+    document.getElementById("txtNombre").value = "";
+    document.getElementById("txtTitulo").value = "";
+    document.getElementById("txtDescripcion").value = "";
+    document.getElementById("txtPrecio").value = "";
+    document.getElementById("txtImagenes").value = "";
 
-const botonFormulario = document.getElementById("btnAgregar");
-botonFormulario.innerText = "Agregar";
-botonFormulario.dataset.id = "";
+    const botonFormulario = document.getElementById("btnAgregar");
+    botonFormulario.innerText = "Agregar";
+    botonFormulario.dataset.id = "";
 
 
 }
 async function cargarProductos() {
-        const productos = await prodService.obtenerProductos();
-        const cuerpoTabla = document.getElementById("tabla-productos");
-        cuerpoTabla.innerHTML = "";
-        productos.forEach(prod => {
-            const fila = document.createElement("tr");
-            fila.innerHTML = `
+    const productos = await prodService.obtenerProductos();
+    const cuerpoTabla = document.getElementById("tabla-productos");
+    cuerpoTabla.innerHTML = "";
+    productos.forEach(prod => {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
             <td>${prod.id}</td>
             <td>${prod.nombre}</td>
             <td>${prod.titulo}</td>
@@ -48,61 +48,61 @@ async function cargarProductos() {
             </td>
         `;
         cuerpoTabla.appendChild(fila)
-            
-        }); 
 
-        const btnBorrar = document.querySelectorAll(".btn-borrar");
-        btnBorrar.forEach (boton =>{
-            boton.addEventListener("click",async()=> {
-                const idProducto = boton.dataset.id;
-                await prodService.eliminarProducto(idProducto);
-                cargarProductos();           
-            });
+    });
+
+    const btnBorrar = document.querySelectorAll(".btn-borrar");
+    btnBorrar.forEach(boton => {
+        boton.addEventListener("click", async () => {
+            const idProducto = boton.dataset.id;
+            await prodService.eliminarProducto(idProducto);
+            cargarProductos();
         });
+    });
 
-        const btnEditar = document.querySelectorAll(".btn-editar");
-        btnEditar.forEach(boton =>{
-            boton.addEventListener("click", async() =>{
-                const idProducto = boton.dataset.id;
-                const producto = await prodService.obtenerProducto(idProducto);
-                document.getElementById("txtNombre").value = producto.nombre;
-                document.getElementById("txtTitulo").value = producto.titulo;
-                document.getElementById("txtDescripcion").value = producto.descripcion;
-               document.getElementById("txtPrecio").value =  producto.precio ;
-                 document.getElementById("txtImagenes").value = producto.imagenes;
-                
-                 const botonFormulario = document.getElementById("btnAgregar");
-                 botonFormulario.innerText = "Guardar Cambios";
-                 botonFormulario.dataset.id = idProducto;
-                
-            });
+    const btnEditar = document.querySelectorAll(".btn-editar");
+    btnEditar.forEach(boton => {
+        boton.addEventListener("click", async () => {
+            const idProducto = boton.dataset.id;
+            const producto = await prodService.obtenerProducto(idProducto);
+            document.getElementById("txtNombre").value = producto.nombre;
+            document.getElementById("txtTitulo").value = producto.titulo;
+            document.getElementById("txtDescripcion").value = producto.descripcion;
+            document.getElementById("txtPrecio").value = producto.precio;
+            document.getElementById("txtImagenes").value = producto.imagenes;
+
+            const botonFormulario = document.getElementById("btnAgregar");
+            botonFormulario.innerText = "Guardar Cambios";
+            botonFormulario.dataset.id = idProducto;
+
         });
-
-
-        
-        
-        }
-
-    
+    });
 
 
 
-function inicializar(){
+
+}
+
+
+
+
+
+function inicializar() {
     document.getElementById("btnAgregar").addEventListener("click", altaProducto);
     cargarProductos();
     const btnBuscar = document.getElementById("btnBuscar");
-        btnBuscar.addEventListener("click", async()=>{
-            const idBuscado = document.getElementById("txtBuscarId").value;
-            const producto = await prodService.obtenerProducto(idBuscado);
-            if(producto == null){
-                alert("El producto no existe");
-            }else{
-                console.log(producto);
-            
+    btnBuscar.addEventListener("click", async () => {
+        const idBuscado = document.getElementById("txtBuscarId").value;
+        const producto = await prodService.obtenerProducto(idBuscado);
+        if (producto.id == null) {
+            alert("El producto no existe");
+        } else {
+            console.log(producto);
+
             const cuerpoTabla = document.getElementById("tabla-productos");
-        cuerpoTabla.innerHTML = "";
-                const fila = document.createElement("tr");
-                fila.innerHTML = `
+            cuerpoTabla.innerHTML = "";
+            const fila = document.createElement("tr");
+            fila.innerHTML = `
                 <td>${producto.id}</td>
                 <td>${producto.nombre}</td>
                 <td>${producto.titulo}</td>
@@ -115,40 +115,41 @@ function inicializar(){
             `;
             cuerpoTabla.appendChild(fila)
 
-            
+
             const btnBorrar = document.querySelectorAll(".btn-borrar");
-            btnBorrar.forEach (boton =>{
-                boton.addEventListener("click",async()=> {
+            btnBorrar.forEach(boton => {
+                boton.addEventListener("click", async () => {
                     const idProducto = boton.dataset.id;
                     await prodService.eliminarProducto(idProducto);
-                    cargarProductos();           
+                    cargarProductos();
                 });
             });
-    
+
             const btnEditar = document.querySelectorAll(".btn-editar");
-            btnEditar.forEach(boton =>{
-                boton.addEventListener("click", async() =>{
+            btnEditar.forEach(boton => {
+                boton.addEventListener("click", async () => {
                     const idProducto = boton.dataset.id;
                     const producto = await prodService.obtenerProducto(idProducto);
                     document.getElementById("txtNombre").value = producto.nombre;
                     document.getElementById("txtTitulo").value = producto.titulo;
                     document.getElementById("txtDescripcion").value = producto.descripcion;
-                   document.getElementById("txtPrecio").value =  producto.precio ;
-                     document.getElementById("txtImagenes").value = producto.imagenes;
-                    
-                     const botonFormulario = document.getElementById("btnAgregar");
-                     botonFormulario.innerText = "Guardar Cambios";
-                     botonFormulario.dataset.id = idProducto; 
-                    
-                });
-            });}
-        }); 
+                    document.getElementById("txtPrecio").value = producto.precio;
+                    document.getElementById("txtImagenes").value = producto.imagenes;
 
-    }
-    
-            
-        
-            
+                    const botonFormulario = document.getElementById("btnAgregar");
+                    botonFormulario.innerText = "Guardar Cambios";
+                    botonFormulario.dataset.id = idProducto;
+
+                });
+            });
+        }
+    });
+
+}
+
+
+
+
 
 
 window.onload = inicializar;
