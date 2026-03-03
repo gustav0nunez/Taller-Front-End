@@ -19,13 +19,14 @@ const prodService = new ProductoService();
 cargarProductos();
 
 document.getElementById("txtNombre").value = "";
-                document.getElementById("txtTitulo").value = "";
-                document.getElementById("txtDescripcion").value = "";
-               document.getElementById("txtPrecio").value =  "" ;
-                 document.getElementById("txtImagenes").value = "";
+document.getElementById("txtTitulo").value = "";
+document.getElementById("txtDescripcion").value = "";
+document.getElementById("txtPrecio").value =  "" ;
+document.getElementById("txtImagenes").value = "";
 
-        const botonFormulario = document.getElementById("btnAgregar");
-                 botonFormulario.innerText = "Agregar";
+const botonFormulario = document.getElementById("btnAgregar");
+botonFormulario.innerText = "Agregar";
+botonFormulario.dataset.id = "";
 
 
 }
@@ -76,14 +77,72 @@ async function cargarProductos() {
                 
             });
         });
+
+
         
-    }
+        
+        }
+
+    
 
 
 
 function inicializar(){
     document.getElementById("btnAgregar").addEventListener("click", altaProducto);
     cargarProductos();
-}
+    const btnBuscar = document.getElementById("btnBuscar");
+        btnBuscar.addEventListener("click", async()=>{
+            const idBuscado = document.getElementById("txtBuscarId").value;
+            const producto = await prodService.obtenerProducto(idBuscado);
+            console.log(producto);
+            const cuerpoTabla = document.getElementById("tabla-productos");
+        cuerpoTabla.innerHTML = "";
+                const fila = document.createElement("tr");
+                fila.innerHTML = `
+                <td>${producto.id}</td>
+                <td>${producto.nombre}</td>
+                <td>${producto.titulo}</td>
+                <td>${producto.precio}</td>
+                <td>${producto.descripcion}</td>
+                <td>
+                    <button class="btn btn-warning btn-sm btn-editar" data-id="${producto.id}">✏️ Editar</button>
+                    <button class="btn btn-danger btn-sm btn-borrar" data-id="${producto.id}">🗑️ Borrar</button>
+                </td>
+            `;
+            cuerpoTabla.appendChild(fila)
+
+            
+            const btnBorrar = document.querySelectorAll(".btn-borrar");
+            btnBorrar.forEach (boton =>{
+                boton.addEventListener("click",async()=> {
+                    const idProducto = boton.dataset.id;
+                    await prodService.eliminarProducto(idProducto);
+                    cargarProductos();           
+                });
+            });
+    
+            const btnEditar = document.querySelectorAll(".btn-editar");
+            btnEditar.forEach(boton =>{
+                boton.addEventListener("click", async() =>{
+                    const idProducto = boton.dataset.id;
+                    const producto = await prodService.obtenerProducto(idProducto);
+                    document.getElementById("txtNombre").value = producto.nombre;
+                    document.getElementById("txtTitulo").value = producto.titulo;
+                    document.getElementById("txtDescripcion").value = producto.descripcion;
+                   document.getElementById("txtPrecio").value =  producto.precio ;
+                     document.getElementById("txtImagenes").value = producto.imagenes;
+                    
+                     const botonFormulario = document.getElementById("btnAgregar");
+                     botonFormulario.innerText = "Guardar Cambios";
+                     botonFormulario.dataset.id = idProducto;
+                    
+                });
+            });
+        });
+    }
+            
+        
+            
+
 
 window.onload = inicializar;
