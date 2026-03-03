@@ -37,6 +37,7 @@ try {
 const response = await fetch(`https://602ee9da4410730017c51705.mockapi.io/api/v1/productos/${id}`); 
 const data = await response.json();
 console.log(data);
+return data;
 } catch (error) {
 console.error(error);
 }}
