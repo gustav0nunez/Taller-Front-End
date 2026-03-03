@@ -94,7 +94,11 @@ function inicializar(){
         btnBuscar.addEventListener("click", async()=>{
             const idBuscado = document.getElementById("txtBuscarId").value;
             const producto = await prodService.obtenerProducto(idBuscado);
-            console.log(producto);
+            if(producto == null){
+                alert("El producto no existe");
+            }else{
+                console.log(producto);
+            
             const cuerpoTabla = document.getElementById("tabla-productos");
         cuerpoTabla.innerHTML = "";
                 const fila = document.createElement("tr");
@@ -134,12 +138,14 @@ function inicializar(){
                     
                      const botonFormulario = document.getElementById("btnAgregar");
                      botonFormulario.innerText = "Guardar Cambios";
-                     botonFormulario.dataset.id = idProducto;
+                     botonFormulario.dataset.id = idProducto; 
                     
                 });
-            });
-        });
+            });}
+        }); 
+
     }
+    
             
         
             
